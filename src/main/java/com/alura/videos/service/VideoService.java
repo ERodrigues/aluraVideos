@@ -28,4 +28,9 @@ public class VideoService {
         Optional<Video> video = videoRepository.findById(id);
         return video.map(VideoDto::convert).orElse(null);
     }
+
+    public VideoDto save(VideoDto videoDto) {
+        Video video = videoRepository.save(Video.convert(videoDto));
+        return VideoDto.convert(video);
+    }
 }
