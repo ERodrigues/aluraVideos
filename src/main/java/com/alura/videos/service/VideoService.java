@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,5 +22,10 @@ public class VideoService {
                 .stream()
                 .map(VideoDto::convert)
                 .collect(Collectors.toList());
+    }
+
+    public VideoDto getById(long id) {
+        Optional<Video> video = videoRepository.findById(id);
+        return video.map(VideoDto::convert).orElse(null);
     }
 }
