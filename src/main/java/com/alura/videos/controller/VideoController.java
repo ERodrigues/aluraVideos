@@ -27,4 +27,10 @@ public class VideoController {
     public VideoDto postVideo(@RequestBody @Valid VideoDto videoDto){
         return videoService.save(videoDto);
     }
+
+    @PutMapping("/videos/alterar/{id}")
+    public VideoDto putVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
+        return videoService.refresh(id, videoDto);
+    }
+
 }
