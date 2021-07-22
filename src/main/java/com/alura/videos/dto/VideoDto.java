@@ -2,10 +2,15 @@ package com.alura.videos.dto;
 
 import com.alura.videos.model.Video;
 
+import javax.validation.constraints.NotBlank;
+
 public class VideoDto {
     private long id;
+    @NotBlank
     private String titulo;
+    @NotBlank
     private String descricao;
+    @NotBlank
     private String url;
 
     public long getId() {
