@@ -33,4 +33,13 @@ public class VideoService {
         Video video = videoRepository.save(Video.convert(videoDto));
         return VideoDto.convert(video);
     }
+
+    public VideoDto refresh(long id, VideoDto videoDto){
+        if (getById(id) != null) {
+            videoDto.setId(id);
+            Video video = videoRepository.save(Video.convert(videoDto));
+            return VideoDto.convert(video);
+        }
+        return null;
+    }
 }
