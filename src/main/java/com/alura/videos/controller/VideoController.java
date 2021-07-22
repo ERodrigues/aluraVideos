@@ -5,6 +5,7 @@ import com.alura.videos.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class VideoController {
     }
 
     @PostMapping("/video")
-    public VideoDto postVideo(@RequestBody VideoDto videoDto){
+    public VideoDto postVideo(@RequestBody @Valid VideoDto videoDto){
         return videoService.save(videoDto);
     }
 }
