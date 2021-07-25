@@ -2,6 +2,8 @@ package com.alura.videos.controller;
 
 import com.alura.videos.dto.VideoDto;
 import com.alura.videos.service.VideoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,10 +11,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Api("Video")
 public class VideoController {
     @Autowired
     private VideoService videoService;
 
+    @ApiOperation(value="Apresenta todos os videos cadastrados")
     @GetMapping("/videos")
     public List<VideoDto> getVideos(){
         return videoService.getAll();
