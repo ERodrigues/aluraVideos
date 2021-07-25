@@ -33,4 +33,8 @@ public class VideoController {
         return videoService.refresh(id, videoDto);
     }
 
+    @DeleteMapping("/videos/{id}")
+    public VideoDto deleteVideo(@PathVariable long id){
+        return videoService.delete(id);
+    }
 }

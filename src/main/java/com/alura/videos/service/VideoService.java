@@ -42,4 +42,10 @@ public class VideoService {
         }
         return null;
     }
+
+    public VideoDto delete(long id){
+        Optional<Video> video = videoRepository.findById(id);
+        video.ifPresent(value -> videoRepository.delete(value));
+        return null;
+    }
 }
