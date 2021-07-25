@@ -38,3 +38,8 @@ Além de servir como exemplo de um projeto Java com Maven, o projeto ainda possu
 - Alteração de um registro de vídeo; 
 - Exclusão de um vídeo do banco de dados; 
 - Listagem de todos os vídeos cadastrados;
+
+## Swagger do projeto
+```shell
+/swagger-ui.html#/
+```
