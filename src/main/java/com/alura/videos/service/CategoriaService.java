@@ -27,4 +27,9 @@ public class CategoriaService {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.map(CategoriaDto::convert).orElse(null);
     }
+
+    public CategoriaDto save(CategoriaDto categoriaDto) {
+        Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
+        return CategoriaDto.convert(categoria);
+    }
 }
