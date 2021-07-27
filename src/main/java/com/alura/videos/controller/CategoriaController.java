@@ -1,2 +1,24 @@
-package com.alura.videos.controller;public class CategoriaController {
+package com.alura.videos.controller;
+
+import com.alura.videos.dto.CategoriaDto;
+import com.alura.videos.service.CategoriaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@Api("Categoria")
+public class CategoriaController {
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @GetMapping("/categorias")
+    @ApiOperation(value="Apresenta todos as categorias cadastradas")
+    public List<CategoriaDto> getCategorias(){
+        return categoriaService.getAll();
+    }
 }
