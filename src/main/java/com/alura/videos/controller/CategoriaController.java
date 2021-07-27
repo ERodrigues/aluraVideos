@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,5 +21,10 @@ public class CategoriaController {
     @ApiOperation(value="Apresenta todos as categorias cadastradas")
     public List<CategoriaDto> getCategorias(){
         return categoriaService.getAll();
+    }
+
+    @GetMapping("/categorias/{id}")
+    public CategoriaDto getCategoria(@PathVariable long id){
+        return categoriaService.getById(id);
     }
 }
