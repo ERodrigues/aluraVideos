@@ -20,23 +20,23 @@ public class CategoriaController {
 
     @GetMapping("/categorias")
     @ApiOperation(value="Apresenta todos as categorias cadastradas")
-    public List<CategoriaDto> getCategorias(){
-        return categoriaService.getAll();
+    public ResponseEntity<List<CategoriaDto>> getCategorias(){
+        return new ResponseEntity<>(categoriaService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/categorias/{id}")
-    public CategoriaDto getCategoria(@PathVariable long id){
-        return categoriaService.getById(id);
+    public ResponseEntity<CategoriaDto> getCategoria(@PathVariable long id){
+        return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/categorias")
-    public CategoriaDto postCategoria(@RequestBody @Valid CategoriaDto categoriaDto){
-        return categoriaService.save(categoriaDto);
+    public ResponseEntity<CategoriaDto> postCategoria(@RequestBody @Valid CategoriaDto categoriaDto){
+        return new ResponseEntity<>(categoriaService.save(categoriaDto), HttpStatus.OK);
     }
 
     @PutMapping("/categorias/{id}")
-    public CategoriaDto putCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
-        return categoriaService.refresh(categoriaDto, id);
+    public ResponseEntity<CategoriaDto> putCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
+        return new ResponseEntity<>(categoriaService.refresh(categoriaDto, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/categorias/{id}")
