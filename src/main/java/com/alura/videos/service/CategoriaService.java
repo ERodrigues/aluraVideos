@@ -3,6 +3,7 @@ package com.alura.videos.service;
 import com.alura.videos.controller.CategoriaController;
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.model.Categoria;
+import com.alura.videos.model.Video;
 import com.alura.videos.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,12 @@ public class CategoriaService {
             Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
             return CategoriaDto.convert(categoria);
         }
+        return null;
+    }
+
+    public CategoriaDto delete(long id) {
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        categoria.ifPresent(value -> categoriaRepository.delete(value));
         return null;
     }
 }

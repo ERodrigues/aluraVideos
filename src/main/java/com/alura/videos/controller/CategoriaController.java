@@ -36,4 +36,9 @@ public class CategoriaController {
     public CategoriaDto putCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
         return categoriaService.refresh(categoriaDto, id);
     }
+
+    @DeleteMapping("/categorias/{id}")
+    public CategoriaDto deleteCategoria(@PathVariable long id){
+        return categoriaService.delete(id);
+    }
 }
