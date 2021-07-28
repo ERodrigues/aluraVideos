@@ -5,6 +5,8 @@ import com.alura.videos.service.CategoriaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +40,13 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/categorias/{id}")
-    public CategoriaDto deleteCategoria(@PathVariable long id){
-        return categoriaService.delete(id);
+    public ResponseEntity<String> deleteCategoria(@PathVariable long id){
+        var isRemoved = categoriaService.delete(id);
+
+        if (!isRemoved){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>("Categoria Excluída com sucesso!", HttpStatus.OK);
     }
 }
