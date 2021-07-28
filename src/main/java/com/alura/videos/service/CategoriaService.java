@@ -43,9 +43,9 @@ public class CategoriaService {
         return null;
     }
 
-    public CategoriaDto delete(long id) {
+    public boolean delete(long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         categoria.ifPresent(value -> categoriaRepository.delete(value));
-        return null;
+        return categoria.isPresent();
     }
 }
