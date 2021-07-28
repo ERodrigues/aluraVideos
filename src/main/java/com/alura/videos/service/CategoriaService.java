@@ -32,4 +32,13 @@ public class CategoriaService {
         Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
         return CategoriaDto.convert(categoria);
     }
+
+    public CategoriaDto refresh(CategoriaDto categoriaDto, long id) {
+        if (getById(id) != null) {
+            categoriaDto.setId(id);
+            Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
+            return CategoriaDto.convert(categoria);
+        }
+        return null;
+    }
 }

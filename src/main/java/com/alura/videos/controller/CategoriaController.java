@@ -31,4 +31,9 @@ public class CategoriaController {
     public CategoriaDto postCategoria(@RequestBody @Valid CategoriaDto categoriaDto){
         return categoriaService.save(categoriaDto);
     }
+
+    @PutMapping("/categorias/{id}")
+    public CategoriaDto putCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
+        return categoriaService.refresh(categoriaDto, id);
+    }
 }
