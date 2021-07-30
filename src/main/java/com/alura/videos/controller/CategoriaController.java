@@ -1,6 +1,7 @@
 package com.alura.videos.controller;
 
 import com.alura.videos.dto.CategoriaDto;
+import com.alura.videos.dto.VideoDto;
 import com.alura.videos.service.CategoriaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,5 +53,11 @@ public class CategoriaController {
         }
 
         return new ResponseEntity<>("Categoria Excluída com sucesso!", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
+    @GetMapping("/categorias/{id}/videos")
+    public ResponseEntity<List<VideoDto>> getVideosPorCategoria(@PathVariable long id){
+        return new ResponseEntity<>(categoriaService.getVideoByCategoria(id), HttpStatus.OK);
     }
 }
