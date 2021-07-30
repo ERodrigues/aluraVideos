@@ -12,6 +12,7 @@ public class VideoDto {
     private String descricao;
     @NotBlank (message = "{videoDto.utl.not.blank}")
     private String url;
+    private CategoriaDto categoria;
 
     public long getId() {
         return id;
@@ -45,12 +46,24 @@ public class VideoDto {
         this.url = url;
     }
 
+    public CategoriaDto getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaDto categoriaDto) {
+        this.categoria = categoriaDto;
+    }
+
     public static VideoDto convert(Video video) {
         VideoDto videoDto = new VideoDto();
         videoDto.setId(video.getId());
         videoDto.setDescricao(video.getDescricao());
         videoDto.setTitulo(video.getTitulo());
         videoDto.setUrl(video.getUrl());
+
+        if (video.getCategoria() != null){
+            videoDto.setCategoria(CategoriaDto.convert((video.getCategoria())));
+        }
         return videoDto;
     }
 }

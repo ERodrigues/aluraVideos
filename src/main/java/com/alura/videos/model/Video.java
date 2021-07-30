@@ -2,10 +2,7 @@ package com.alura.videos.model;
 
 import com.alura.videos.dto.VideoDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name="biblioteca")
 public class Video {
@@ -16,6 +13,10 @@ public class Video {
     private String titulo;
     private String descricao;
     private String url;
+
+    @ManyToOne
+    @JoinColumn(name="id_categoria")
+    private Categoria categoria;
 
     public long getId() {
         return id;
@@ -49,12 +50,24 @@ public class Video {
         this.url = url;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public static Video convert(VideoDto videoDto) {
         Video video = new Video();
         video.setId(videoDto.getId());
         video.setDescricao(videoDto.getDescricao());
         video.setTitulo(videoDto.getTitulo());
         video.setUrl(videoDto.getUrl());
+
+        if (videoDto.getCategoria() != null){
+            video.setCategoria(Categoria.convert(videoDto.getCategoria()));
+        }
         return video;
     }
 }
