@@ -1,7 +1,6 @@
 package com.alura.videos.controller;
 
 import com.alura.videos.dto.VideoDto;
-import com.alura.videos.model.Video;
 import com.alura.videos.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
