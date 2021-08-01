@@ -58,4 +58,10 @@ public class VideoController {
     public ResponseEntity<List<VideoDto>> getVideosByTitulo(@RequestParam String search){
         return new ResponseEntity<>(videoService.getVideoByTitulo(search), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
+    @GetMapping("/categorias/{id}/videos")
+    public ResponseEntity<List<VideoDto>> getVideosPorCategoria(@PathVariable long id){
+        return new ResponseEntity<>(videoService.getVideoByCategoria(id), HttpStatus.OK);
+    }
 }
