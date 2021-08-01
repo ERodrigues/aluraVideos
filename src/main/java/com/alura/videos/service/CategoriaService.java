@@ -1,12 +1,9 @@
 package com.alura.videos.service;
 
-import com.alura.videos.controller.CategoriaController;
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
 import com.alura.videos.model.Categoria;
-import com.alura.videos.model.Video;
 import com.alura.videos.repository.CategoriaRepository;
-import com.alura.videos.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +15,6 @@ import java.util.stream.Collectors;
 public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
-    @Autowired
-    private VideoRepository videoRepository;
 
     public List<CategoriaDto> getAll() {
         return categoriaRepository.findAll()
@@ -51,13 +46,5 @@ public class CategoriaService {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         categoria.ifPresent(value -> categoriaRepository.delete(value));
         return categoria.isPresent();
-    }
-
-    public List<VideoDto> getVideoByCategoria(long id){
-        List<Video> videos = videoRepository.getVideosByCategoria(id);
-        return videos
-                .stream()
-                .map(VideoDto::convert)
-                .collect(Collectors.toList());
     }
 }
