@@ -15,4 +15,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
                    "where b.id_categoria = c.id " +
                    "and c.id = :categoriaId", nativeQuery = true)
     public List<Video> getVideosByCategoria(@Param("categoriaId") Long categoriaId);
+    public List<Video> findByTituloContainingIgnoreCase (String search);
 }

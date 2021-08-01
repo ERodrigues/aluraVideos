@@ -52,4 +52,10 @@ public class VideoController {
 
         return new ResponseEntity<>("Video Excluído com sucesso", HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Busca videos de acordo com o seu titulo")
+    @GetMapping("/videos/")
+    public ResponseEntity<List<VideoDto>> getVideosByTitulo(@RequestParam String search){
+        return new ResponseEntity<>(videoService.getVideoByTitulo(search), HttpStatus.OK);
+    }
 }

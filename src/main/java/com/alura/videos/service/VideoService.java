@@ -48,4 +48,12 @@ public class VideoService {
         video.ifPresent(value -> videoRepository.delete(value));
         return video.isPresent();
     }
+
+    public List<VideoDto> getVideoByTitulo(String search) {
+        List<Video> videos = videoRepository.findByTituloContainingIgnoreCase(search);
+        return videos
+                .stream()
+                .map(VideoDto::convert)
+                .collect(Collectors.toList());
+    }
 }
