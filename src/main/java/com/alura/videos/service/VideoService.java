@@ -1,5 +1,6 @@
 package com.alura.videos.service;
 
+import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
@@ -30,6 +31,9 @@ public class VideoService {
     }
 
     public VideoDto save(VideoDto videoDto) {
+        if (videoDto.getCategoria() == null){
+            videoDto.setCategoria(new CategoriaDto(1, "LIVRE", "Branco"));
+        }
         Video video = videoRepository.save(Video.convert(videoDto));
         return VideoDto.convert(video);
     }
@@ -51,6 +55,14 @@ public class VideoService {
 
     public List<VideoDto> getVideoByTitulo(String search) {
         List<Video> videos = videoRepository.findByTituloContainingIgnoreCase(search);
+        return videos
+                .stream()
+                .map(VideoDto::convert)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoDto> getVideoByCategoria(long id){
+        List<Video> videos = videoRepository.getVideosByCategoria(id);
         return videos
                 .stream()
                 .map(VideoDto::convert)
