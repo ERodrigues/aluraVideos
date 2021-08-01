@@ -7,6 +7,14 @@ public class CategoriaDto {
     private String titulo;
     private String cor;
 
+    public CategoriaDto(){}
+
+    public CategoriaDto(long id, String titulo, String cor){
+        this.id = id;
+        this.titulo = titulo;
+        this.cor = cor;
+    }
+
     public long getId() {
         return id;
     }
