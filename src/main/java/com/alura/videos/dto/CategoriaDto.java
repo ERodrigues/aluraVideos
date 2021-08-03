@@ -2,9 +2,13 @@ package com.alura.videos.dto;
 
 import com.alura.videos.model.Categoria;
 
+import javax.validation.constraints.NotBlank;
+
 public class CategoriaDto {
     private long id;
+    @NotBlank
     private String titulo;
+    @NotBlank
     private String cor;
 
     public CategoriaDto(){}

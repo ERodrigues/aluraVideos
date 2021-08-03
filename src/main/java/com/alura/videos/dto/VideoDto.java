@@ -6,11 +6,11 @@ import javax.validation.constraints.NotBlank;
 
 public class VideoDto {
     private long id;
-    @NotBlank (message = "{videoDto.titulo.not.blank}")
+    @NotBlank
     private String titulo;
-    @NotBlank (message = "{videoDto.descricao.not.blank}")
+    @NotBlank
     private String descricao;
-    @NotBlank (message = "{videoDto.utl.not.blank}")
+    @NotBlank
     private String url;
     private CategoriaDto categoria;
 
