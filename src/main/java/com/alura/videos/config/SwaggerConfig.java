@@ -1,4 +1,4 @@
-package com.alura.videos;
+package com.alura.videos.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
