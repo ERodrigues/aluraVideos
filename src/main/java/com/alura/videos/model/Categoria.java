@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long Id;
     @NotBlank
     private String titulo;
     @NotBlank
@@ -22,7 +22,7 @@ public class Categoria {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 

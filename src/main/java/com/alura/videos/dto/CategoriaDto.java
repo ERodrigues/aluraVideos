@@ -5,7 +5,7 @@ import com.alura.videos.model.Categoria;
 import javax.validation.constraints.NotBlank;
 
 public class CategoriaDto {
-    private long id;
+    private Long id;
     @NotBlank
     private String titulo;
     @NotBlank
@@ -23,7 +23,7 @@ public class CategoriaDto {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -5,7 +5,7 @@ import com.alura.videos.model.Video;
 import javax.validation.constraints.NotBlank;
 
 public class VideoDto {
-    private long id;
+    private Long id;
     @NotBlank
     private String titulo;
     @NotBlank
@@ -18,7 +18,7 @@ public class VideoDto {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
