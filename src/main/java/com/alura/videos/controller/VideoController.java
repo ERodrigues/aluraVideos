@@ -20,26 +20,26 @@ public class VideoController {
 
     @ApiOperation(value="Retorna todos os videos cadastrados")
     @GetMapping("/videos")
-    public ResponseEntity<List<VideoDto>> getVideos(){
+    public ResponseEntity<List<VideoDto>> getAll(){
         return new ResponseEntity<>(videoService.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna o vídeo de acordo com o seu ID")
     @GetMapping("/videos/{id}")
-    public ResponseEntity<VideoDto> getVideo(@PathVariable long id){
+    public ResponseEntity<VideoDto> getVideoById(@PathVariable long id){
         return new ResponseEntity<>(videoService.getById(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra um novo vídeo na base de dados")
     @PostMapping("/video")
-    public ResponseEntity<VideoDto> postVideo(@RequestBody @Valid VideoDto videoDto){
+    public ResponseEntity<VideoDto> saveVideo(@RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.save(videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
     @PutMapping("/videos/alterar/{id}")
-    public ResponseEntity<VideoDto> putVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
-        return new ResponseEntity<>(videoService.refresh(id, videoDto), HttpStatus.OK);
+    public ResponseEntity<VideoDto> updateVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
+        return new ResponseEntity<>(videoService.update(id, videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
@@ -61,7 +61,7 @@ public class VideoController {
 
     @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
     @GetMapping("/categorias/{id}/videos")
-    public ResponseEntity<List<VideoDto>> getVideosPorCategoria(@PathVariable long id){
+    public ResponseEntity<List<VideoDto>> getVideoByCategoria(@PathVariable long id){
         return new ResponseEntity<>(videoService.getVideoByCategoria(id), HttpStatus.OK);
     }
 }
