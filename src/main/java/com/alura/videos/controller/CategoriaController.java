@@ -26,7 +26,7 @@ public class CategoriaController {
 
     @ApiOperation(value="Retorna a categoria de acordo com o seu ID")
     @GetMapping("/categorias/{id}")
-    public ResponseEntity<CategoriaDto> getCategoryById(@PathVariable long id){
+    public ResponseEntity<CategoriaDto> getCategoryById(@PathVariable Long id){
         return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
     }
 
@@ -38,13 +38,13 @@ public class CategoriaController {
 
     @ApiOperation(value="Altera o registro de uma categoria de acordo com o seu ID")
     @PutMapping("/categorias/{id}")
-    public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
+    public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable Long id){
         return new ResponseEntity<>(categoriaService.update(categoriaDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Exclui o registro de uma categoria de acordo com o seu ID")
     @DeleteMapping("/categorias/{id}")
-    public ResponseEntity<String> deleteCategoria(@PathVariable long id){
+    public ResponseEntity<String> deleteCategoria(@PathVariable Long id){
         var isRemoved = categoriaService.delete(id);
 
         if (!isRemoved){

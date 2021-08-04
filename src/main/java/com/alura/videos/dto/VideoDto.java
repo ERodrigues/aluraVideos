@@ -14,7 +14,7 @@ public class VideoDto {
     private String url;
     private CategoriaDto categoria;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

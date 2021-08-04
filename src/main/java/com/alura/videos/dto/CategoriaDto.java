@@ -19,7 +19,7 @@ public class CategoriaDto {
         this.cor = cor;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

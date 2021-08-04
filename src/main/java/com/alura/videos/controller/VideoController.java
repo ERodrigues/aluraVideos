@@ -26,7 +26,7 @@ public class VideoController {
 
     @ApiOperation(value="Retorna o vídeo de acordo com o seu ID")
     @GetMapping("/videos/{id}")
-    public ResponseEntity<VideoDto> getVideoById(@PathVariable long id){
+    public ResponseEntity<VideoDto> getVideoById(@PathVariable Long id){
         return new ResponseEntity<>(videoService.getById(id), HttpStatus.OK);
     }
 
@@ -44,7 +44,7 @@ public class VideoController {
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
     @DeleteMapping("/videos/{id}")
-    public ResponseEntity<String> deleteVideo(@PathVariable long id){
+    public ResponseEntity<String> deleteVideo(@PathVariable Long id){
         var isRemoved = videoService.delete(id);
         if (!isRemoved){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,7 +61,7 @@ public class VideoController {
 
     @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
     @GetMapping("/categorias/{id}/videos")
-    public ResponseEntity<List<VideoDto>> getVideoByCategoria(@PathVariable long id){
+    public ResponseEntity<List<VideoDto>> getVideoByCategoria(@PathVariable Long id){
         return new ResponseEntity<>(videoService.getVideoByCategoria(id), HttpStatus.OK);
     }
 }
