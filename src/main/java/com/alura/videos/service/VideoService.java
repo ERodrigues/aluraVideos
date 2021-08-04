@@ -25,7 +25,7 @@ public class VideoService {
                 .collect(Collectors.toList());
     }
 
-    public VideoDto getById(long id) {
+    public VideoDto getById(Long id) {
         Optional<Video> video = videoRepository.findById(id);
         return video.map(VideoDto::convert).orElse(null);
     }
@@ -38,7 +38,7 @@ public class VideoService {
         return VideoDto.convert(video);
     }
 
-    public VideoDto update(long id, VideoDto videoDto){
+    public VideoDto update(Long id, VideoDto videoDto){
         if (getById(id) != null) {
             videoDto.setId(id);
             Video video = videoRepository.save(Video.convert(videoDto));
@@ -47,7 +47,7 @@ public class VideoService {
         return null;
     }
 
-    public Boolean delete(long id){
+    public Boolean delete(Long id){
         Optional<Video> video = videoRepository.findById(id);
         video.ifPresent(value -> videoRepository.delete(value));
         return video.isPresent();
