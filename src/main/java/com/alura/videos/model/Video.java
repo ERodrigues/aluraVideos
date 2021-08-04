@@ -18,7 +18,7 @@ public class Video {
     @JoinColumn(name="id_categoria")
     private Categoria categoria;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

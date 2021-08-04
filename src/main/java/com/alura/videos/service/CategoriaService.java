@@ -22,7 +22,7 @@ public class CategoriaService {
                 .collect(Collectors.toList());
     }
 
-    public CategoriaDto getById(long id) {
+    public CategoriaDto getById(Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.map(CategoriaDto::convert).orElse(null);
     }
@@ -32,7 +32,7 @@ public class CategoriaService {
         return CategoriaDto.convert(categoria);
     }
 
-    public CategoriaDto update(CategoriaDto categoriaDto, long id) {
+    public CategoriaDto update(CategoriaDto categoriaDto, Long id) {
         if (getById(id) != null) {
             categoriaDto.setId(id);
             Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
@@ -41,7 +41,7 @@ public class CategoriaService {
         return null;
     }
 
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         categoria.ifPresent(value -> categoriaRepository.delete(value));
         return categoria.isPresent();
