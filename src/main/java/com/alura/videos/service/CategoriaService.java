@@ -1,7 +1,6 @@
 package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
-import com.alura.videos.dto.VideoDto;
 import com.alura.videos.model.Categoria;
 import com.alura.videos.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class CategoriaService {
         return CategoriaDto.convert(categoria);
     }
 
-    public CategoriaDto refresh(CategoriaDto categoriaDto, long id) {
+    public CategoriaDto update(CategoriaDto categoriaDto, long id) {
         if (getById(id) != null) {
             categoriaDto.setId(id);
             Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
