@@ -62,7 +62,7 @@ public class VideoService {
     }
 
     public List<VideoDto> getVideoByCategoria(long id){
-        List<Video> videos = videoRepository.getVideosByCategoria(id);
+        List<Video> videos = videoRepository.findByCategoriaId(id);
         return videos
                 .stream()
                 .map(VideoDto::convert)
