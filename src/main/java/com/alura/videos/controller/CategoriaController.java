@@ -1,9 +1,7 @@
 package com.alura.videos.controller;
 
 import com.alura.videos.dto.CategoriaDto;
-import com.alura.videos.dto.VideoDto;
 import com.alura.videos.service.CategoriaService;
-import com.alura.videos.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +20,26 @@ public class CategoriaController {
 
     @GetMapping("/categorias")
     @ApiOperation(value="Retorna todas categorias cadastradas")
-    public ResponseEntity<List<CategoriaDto>> getCategorias(){
+    public ResponseEntity<List<CategoriaDto>> getAll(){
         return new ResponseEntity<>(categoriaService.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna a categoria de acordo com o seu ID")
     @GetMapping("/categorias/{id}")
-    public ResponseEntity<CategoriaDto> getCategoria(@PathVariable long id){
+    public ResponseEntity<CategoriaDto> getCategoryById(@PathVariable long id){
         return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra uma categoria na base")
     @PostMapping("/categorias")
-    public ResponseEntity<CategoriaDto> postCategoria(@RequestBody @Valid CategoriaDto categoriaDto){
+    public ResponseEntity<CategoriaDto> saveCategory(@RequestBody @Valid CategoriaDto categoriaDto){
         return new ResponseEntity<>(categoriaService.save(categoriaDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera o registro de uma categoria de acordo com o seu ID")
     @PutMapping("/categorias/{id}")
-    public ResponseEntity<CategoriaDto> putCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
-        return new ResponseEntity<>(categoriaService.refresh(categoriaDto, id), HttpStatus.OK);
+    public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable long id){
+        return new ResponseEntity<>(categoriaService.update(categoriaDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Exclui o registro de uma categoria de acordo com o seu ID")
