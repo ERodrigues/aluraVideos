@@ -13,37 +13,38 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping("/videos")
 @Api("Video")
 public class VideoController {
     @Autowired
     private VideoService videoService;
 
     @ApiOperation(value="Retorna todos os videos cadastrados")
-    @GetMapping("/videos")
+    @GetMapping
     public ResponseEntity<List<VideoDto>> getAll(){
         return new ResponseEntity<>(videoService.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna o vídeo de acordo com o seu ID")
-    @GetMapping("/videos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<VideoDto> getVideoById(@PathVariable Long id){
         return new ResponseEntity<>(videoService.getById(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra um novo vídeo na base de dados")
-    @PostMapping("/video")
+    @PostMapping
     public ResponseEntity<VideoDto> saveVideo(@RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.save(videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
-    @PutMapping("/videos/alterar/{id}")
+    @PutMapping("/alterar/{id}")
     public ResponseEntity<VideoDto> updateVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.update(id, videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
-    @DeleteMapping("/videos/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVideo(@PathVariable Long id){
         var isRemoved = videoService.delete(id);
         if (!isRemoved){
@@ -54,7 +55,7 @@ public class VideoController {
     }
 
     @ApiOperation(value = "Busca videos de acordo com o seu titulo")
-    @GetMapping("/videos/")
+    @GetMapping("/")
     public ResponseEntity<List<VideoDto>> getVideosByTitulo(@RequestParam String search){
         return new ResponseEntity<>(videoService.getVideoByTitulo(search), HttpStatus.OK);
     }

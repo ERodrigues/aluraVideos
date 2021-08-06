@@ -61,7 +61,7 @@ public class VideoService {
                 .collect(Collectors.toList());
     }
 
-    public List<VideoDto> getVideoByCategoria(long id){
+    public List<VideoDto> getVideoByCategoria(Long id){
         List<Video> videos = videoRepository.findByCategoriaId(id);
         return videos
                 .stream()

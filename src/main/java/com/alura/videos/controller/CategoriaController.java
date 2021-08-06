@@ -13,37 +13,38 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping("/categorias")
 @Api("Categoria")
 public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping("/categorias")
+    @GetMapping
     @ApiOperation(value="Retorna todas categorias cadastradas")
     public ResponseEntity<List<CategoriaDto>> getAll(){
         return new ResponseEntity<>(categoriaService.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna a categoria de acordo com o seu ID")
-    @GetMapping("/categorias/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CategoriaDto> getCategoryById(@PathVariable Long id){
         return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra uma categoria na base")
-    @PostMapping("/categorias")
+    @PostMapping
     public ResponseEntity<CategoriaDto> saveCategory(@RequestBody @Valid CategoriaDto categoriaDto){
         return new ResponseEntity<>(categoriaService.save(categoriaDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera o registro de uma categoria de acordo com o seu ID")
-    @PutMapping("/categorias/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable Long id){
         return new ResponseEntity<>(categoriaService.update(categoriaDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Exclui o registro de uma categoria de acordo com o seu ID")
-    @DeleteMapping("/categorias/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id){
         var isRemoved = categoriaService.delete(id);
 
