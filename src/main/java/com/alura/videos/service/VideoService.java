@@ -5,6 +5,8 @@ import com.alura.videos.dto.VideoDto;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,12 +19,10 @@ public class VideoService {
     @Autowired
     private VideoRepository videoRepository;
 
-    public List<VideoDto> getAll() {
-        List<Video> videos = videoRepository.findAll();
+    public Page<VideoDto> getAll(Pageable pages) {
+        Page<Video> videos = videoRepository.findAll(pages);
         return videos
-                .stream()
-                .map(VideoDto::convert)
-                .collect(Collectors.toList());
+                .map(VideoDto::convert);
     }
 
     public VideoDto getById(Long id) {
@@ -53,19 +53,15 @@ public class VideoService {
         return video.isPresent();
     }
 
-    public List<VideoDto> getVideoByTitulo(String search) {
-        List<Video> videos = videoRepository.findByTituloContainingIgnoreCase(search);
+    public Page<VideoDto> getVideoByTitulo(String search, Pageable pages) {
+        Page<Video> videos = videoRepository.findByTituloContainingIgnoreCase(search, pages);
         return videos
-                .stream()
-                .map(VideoDto::convert)
-                .collect(Collectors.toList());
+                .map(VideoDto::convert);
     }
 
-    public List<VideoDto> getVideoByCategoria(Long id){
-        List<Video> videos = videoRepository.findByCategoriaId(id);
+    public Page<VideoDto> getVideoByCategoria(Long id, Pageable pages){
+        Page<Video> videos = videoRepository.findByCategoriaId(id, pages);
         return videos
-                .stream()
-                .map(VideoDto::convert)
-                .collect(Collectors.toList());
+                .map(VideoDto::convert);
     }
 }

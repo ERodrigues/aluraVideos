@@ -5,6 +5,9 @@ import com.alura.videos.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +24,9 @@ public class VideoController {
 
     @ApiOperation(value="Retorna todos os videos cadastrados")
     @GetMapping
-    public ResponseEntity<List<VideoDto>> getAll(){
-        return new ResponseEntity<>(videoService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<VideoDto>> getAll(@RequestParam int page, @RequestParam int size){
+        Pageable pages = PageRequest.of(page, size);
+        return new ResponseEntity<>(videoService.getAll(pages), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna o vídeo de acordo com o seu ID")
@@ -56,13 +60,15 @@ public class VideoController {
 
     @ApiOperation(value = "Busca videos de acordo com o seu titulo")
     @GetMapping("/")
-    public ResponseEntity<List<VideoDto>> getVideosByTitulo(@RequestParam String search){
-        return new ResponseEntity<>(videoService.getVideoByTitulo(search), HttpStatus.OK);
+    public ResponseEntity<Page<VideoDto>> getVideosByTitulo(@RequestParam String search, @RequestParam int page, @RequestParam int size){
+        Pageable pages = PageRequest.of(page, size);
+        return new ResponseEntity<>(videoService.getVideoByTitulo(search, pages), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
     @GetMapping("/categorias/{id}/videos")
-    public ResponseEntity<List<VideoDto>> getVideoByCategoria(@PathVariable Long id){
-        return new ResponseEntity<>(videoService.getVideoByCategoria(id), HttpStatus.OK);
+    public ResponseEntity<Page<VideoDto>> getVideoByCategoria(@PathVariable Long id, @RequestParam int page, @RequestParam int size){
+        Pageable pages = PageRequest.of(page, size);
+        return new ResponseEntity<>(videoService.getVideoByCategoria(id, pages), HttpStatus.OK);
     }
 }
