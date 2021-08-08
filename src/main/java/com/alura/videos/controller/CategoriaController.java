@@ -5,12 +5,14 @@ import com.alura.videos.service.CategoriaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/categorias")
@@ -21,8 +23,9 @@ public class CategoriaController {
 
     @GetMapping
     @ApiOperation(value="Retorna todas categorias cadastradas")
-    public ResponseEntity<List<CategoriaDto>> getAll(){
-        return new ResponseEntity<>(categoriaService.getAll(), HttpStatus.OK);
+    public ResponseEntity<Page<CategoriaDto>> getAll(@RequestParam int page, @RequestParam int size){
+        Pageable pages = PageRequest.of(page, size);
+        return new ResponseEntity<>(categoriaService.getAll(pages), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna a categoria de acordo com o seu ID")

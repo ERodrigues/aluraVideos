@@ -4,22 +4,20 @@ import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.model.Categoria;
 import com.alura.videos.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public List<CategoriaDto> getAll() {
-        return categoriaRepository.findAll()
-                .stream()
-                .map(CategoriaDto::convert)
-                .collect(Collectors.toList());
+    public Page<CategoriaDto> getAll(Pageable pages) {
+        return categoriaRepository.findAll(pages)
+                .map(CategoriaDto::convert);
     }
 
     public CategoriaDto getById(Long id) {
