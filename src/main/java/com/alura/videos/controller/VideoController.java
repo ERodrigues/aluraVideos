@@ -38,21 +38,18 @@ public class VideoController {
 
     @ApiOperation(value="Cadastra um novo vídeo na base de dados")
     @PostMapping
-    @CacheEvict("VideoByCategoria")
     public ResponseEntity<VideoDto> saveVideo(@RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.save(videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
     @PutMapping("/alterar/{id}")
-    @CacheEvict("VideoByCategoria")
     public ResponseEntity<VideoDto> updateVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.update(id, videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
     @DeleteMapping("/{id}")
-    @CacheEvict("VideoByCategoria")
     public ResponseEntity<String> deleteVideo(@PathVariable Long id){
         var isRemoved = videoService.delete(id);
         if (!isRemoved){
@@ -71,7 +68,6 @@ public class VideoController {
 
     @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
     @GetMapping("/categorias/{id}/videos")
-    @Cacheable("VideoByCategoria")
     public ResponseEntity<Page<VideoDto>> getVideoByCategoria(@PathVariable Long id, @RequestParam int page, @RequestParam int size){
         Pageable pages = PageRequest.of(page, size);
         return new ResponseEntity<>(videoService.getVideoByCategoria(id, pages), HttpStatus.OK);

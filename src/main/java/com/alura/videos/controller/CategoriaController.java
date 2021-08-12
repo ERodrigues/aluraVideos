@@ -5,6 +5,8 @@ import com.alura.videos.service.CategoriaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class CategoriaController {
 
     @GetMapping
     @ApiOperation(value="Retorna todas categorias cadastradas")
+    @Cacheable("listCategory")
     public ResponseEntity<Page<CategoriaDto>> getAll(@RequestParam int page, @RequestParam int size){
         Pageable pages = PageRequest.of(page, size);
         return new ResponseEntity<>(categoriaService.getAll(pages), HttpStatus.OK);
@@ -36,18 +39,21 @@ public class CategoriaController {
 
     @ApiOperation(value="Cadastra uma categoria na base")
     @PostMapping
+    @CacheEvict("listCategory")
     public ResponseEntity<CategoriaDto> saveCategory(@RequestBody @Valid CategoriaDto categoriaDto){
         return new ResponseEntity<>(categoriaService.save(categoriaDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera o registro de uma categoria de acordo com o seu ID")
     @PutMapping("/{id}")
+    @CacheEvict("listCategory")
     public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable Long id){
         return new ResponseEntity<>(categoriaService.update(categoriaDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Exclui o registro de uma categoria de acordo com o seu ID")
     @DeleteMapping("/{id}")
+    @CacheEvict("listCategory")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id){
         var isRemoved = categoriaService.delete(id);
 
