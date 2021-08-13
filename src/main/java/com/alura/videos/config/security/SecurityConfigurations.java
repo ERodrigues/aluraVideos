@@ -14,6 +14,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         /* Parametriza quais URLs do projeto serão publicas */
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/categorias").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().formLogin();
     }
 }
