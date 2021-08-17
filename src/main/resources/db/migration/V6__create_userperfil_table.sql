@@ -1,15 +1,15 @@
-create table videos.usuarios_perfis (
+create table videos.usuario_perfis (
     id bigserial primary key,
-    id_usuario bigint not null,
-    id_perfil bigint not null
+    usuario_id bigint not null,
+    perfis_id bigint not null
 );
 
-alter table videos.usuarios_perfis
+alter table videos.usuario_perfis
     add constraint fk_usuarios_perfis_perfil
-    foreign key (id_perfil)
+    foreign key (perfis_id)
     references videos.perfis(id);
 
-alter table videos.usuarios_perfis
+alter table videos.usuario_perfis
     add constraint fk_usuarios_perfis_usuario
-    foreign key (id_usuario)
+    foreign key (usuario_id)
     references videos.usuario(id);
