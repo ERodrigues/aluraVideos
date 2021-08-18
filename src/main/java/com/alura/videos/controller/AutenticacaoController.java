@@ -2,6 +2,7 @@ package com.alura.videos.controller;
 
 import com.alura.videos.config.security.service.TokenApiService;
 import com.alura.videos.dto.LoginDto;
+import com.alura.videos.dto.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,13 +27,13 @@ public class AutenticacaoController {
 
 
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginDto loginDto){
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginDto loginDto){
         UsernamePasswordAuthenticationToken login = loginDto.convert();
 
         try{
             Authentication authenticate = authManager.authenticate(login);
             String token = tokenService.gerarToken(authenticate);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token,"Bearer"));
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
