@@ -1,4 +1,4 @@
-create table usuario_perfis (
+create table if not exists usuario_perfis (
     id bigserial primary key,
     usuario_id bigint not null,
     perfis_id bigint not null
