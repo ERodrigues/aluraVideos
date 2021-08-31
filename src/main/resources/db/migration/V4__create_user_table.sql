@@ -1,4 +1,4 @@
-create table videos.usuario (
+create table usuario (
     id bigserial primary key,
     nome varchar(100) not null,
     email varchar(50) not null,

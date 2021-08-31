@@ -1,1 +1,1 @@
-alter table videos.usuario alter column senha type varchar(100);
+alter table usuario alter column senha type varchar(100);

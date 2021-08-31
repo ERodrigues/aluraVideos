@@ -1,6 +1,5 @@
-create schema if not exists videos;
 
-create table videos.biblioteca (
+create table biblioteca (
     id bigserial primary key,
     titulo varchar(50),
     descricao varchar(100),
