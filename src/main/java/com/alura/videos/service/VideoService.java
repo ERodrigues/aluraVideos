@@ -16,8 +16,12 @@ import java.util.stream.Collectors;
 @Service
 public class VideoService {
 
-    @Autowired
     private VideoRepository videoRepository;
+
+    @Autowired
+    public VideoService(VideoRepository videoRepository){
+        this.videoRepository = videoRepository;
+    }
 
     public Page<VideoDto> getAll(Pageable pages) {
         Page<Video> videos = videoRepository.findAll(pages);
