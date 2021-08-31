@@ -43,7 +43,7 @@ public class VideoController {
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
-    @PutMapping("/alterar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<VideoDto> updateVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
         return new ResponseEntity<>(videoService.update(id, videoDto), HttpStatus.OK);
     }
