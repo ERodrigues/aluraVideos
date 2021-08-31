@@ -18,6 +18,15 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria")
     private List<Video> videos;
 
+    public Categoria(){
+
+    }
+
+    public Categoria(String titulo, String cor) {
+        this.titulo = titulo;
+        this.cor = cor;
+    }
+
     public Long getId() {
         return id;
     }

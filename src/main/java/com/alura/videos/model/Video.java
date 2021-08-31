@@ -18,6 +18,17 @@ public class Video {
     @JoinColumn(name="id_categoria")
     private Categoria categoria;
 
+    public Video(){
+
+    }
+
+    public Video(String titulo, String descricao, String url, Categoria categoria) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.url = url;
+        this.categoria = categoria;
+    }
+
     public Long getId() {
         return id;
     }
