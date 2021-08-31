@@ -14,6 +14,15 @@ public class VideoDto {
     private String url;
     private CategoriaDto categoria;
 
+    public VideoDto(){}
+
+    public VideoDto(String titulo, String descricao, String url, CategoriaDto categoriaDto) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.url = url;
+        this.categoria = categoriaDto;
+    }
+
     public Long getId() {
         return id;
     }
