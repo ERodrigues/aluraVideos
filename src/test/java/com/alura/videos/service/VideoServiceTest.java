@@ -26,14 +26,10 @@ import static org.mockito.Mockito.*;
 class VideoServiceTest {
     @Mock
     private VideoRepository videoRepository;
-    @Mock
-    private CategoriaRepository categoriaRepository;
     @Captor
     private ArgumentCaptor<Video> videoArgumentCaptor;
     @InjectMocks
     private VideoService videoService;
-    @InjectMocks
-    private CategoriaService categoriaService;
 
     private Video video;
 
@@ -57,9 +53,7 @@ class VideoServiceTest {
 
     @Test
     public void aoInserirUmVideoComCategoriaValidaACategoriaInformadaDeveSerPersistida(){
-        CategoriaDto categoriaPersistida = persisteCategoriaParaTeste();
-        VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", categoriaPersistida);
-        video.setCategoria(Categoria.convert(categoriaPersistida));
+        VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", new CategoriaDto(1,"ACAO", "VERMELHA"));
 
         when(videoRepository.save(any(Video.class))).thenReturn(video);
         videoService.save(videoDto);
@@ -67,12 +61,6 @@ class VideoServiceTest {
         verify(videoRepository).save(videoArgumentCaptor.capture());
         Video captureVideo = videoArgumentCaptor.getValue();
         Assertions.assertEquals("ACAO", captureVideo.getCategoria().getTitulo());
-    }
-
-    private CategoriaDto persisteCategoriaParaTeste() {
-        Categoria categoria = new Categoria("ACAO", "VERMELHA");
-        CategoriaDto categoriaDto = new CategoriaDto(1,"ACAO", "VERMELHA");
-        when(categoriaRepository.save(any(Categoria.class))).thenReturn(categoria);
-        return categoriaService.save(categoriaDto);
+        Assertions.assertEquals("VERMELHA", captureVideo.getCategoria().getCor());
     }
 }
