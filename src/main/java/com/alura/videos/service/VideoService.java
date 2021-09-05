@@ -9,19 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VideoService {
 
-    private VideoRepository videoRepository;
-
     @Autowired
-    public VideoService(VideoRepository videoRepository){
-        this.videoRepository = videoRepository;
-    }
+    private VideoRepository videoRepository;
 
     public Page<VideoDto> getAll(Pageable pages) {
         Page<Video> videos = videoRepository.findAll(pages);
