@@ -74,6 +74,12 @@ class VideoServiceTest {
     }
 
     @Test
+    public void aoEfetuarBuscaPorVideoComDeterminadoIdInexistenteNoBancoOMesmoDeveRetornarNulo(){
+        VideoDto videoById = videoService.getById(1L);
+        Assertions.assertNull(videoById);
+    }
+
+    @Test
     public void aoInserirUmVideoSemCategoriaACategoriaLivreDeveSerInformada(){
         VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", null);
 
