@@ -2,9 +2,7 @@ package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
-import com.alura.videos.model.Categoria;
 import com.alura.videos.model.Video;
-import com.alura.videos.repository.CategoriaRepository;
 import com.alura.videos.repository.VideoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -31,11 +36,28 @@ class VideoServiceTest {
     @InjectMocks
     private VideoService videoService;
 
+    private Pageable pages;
     private Video video;
 
     @BeforeEach
     public void setUp(){
         video = new Video("Novo Video", "Teste de video", "", null);
+        pages = PageRequest.of(0, 5);
+    }
+
+    @Test
+    public void aoBuscarPorTodosRegistrosRetornaQuantidadeDeRegistrosExistentesNoBanco(){
+        List<Video> videos = Arrays.asList(
+            new Video("A vida como ela e", "Drama", "", null),
+            new Video("Deby e Loyd", "Comedia", "", null)
+        );
+
+        Page<Video> PageVideos = new PageImpl<>(videos, pages, videos.size());
+
+        when(videoRepository.findAll(pages)).thenReturn(PageVideos);
+        Page<VideoDto> allVideos = videoService.getAll(pages);
+
+        Assertions.assertEquals(allVideos.get().count(), videos.size());
     }
 
     @Test
