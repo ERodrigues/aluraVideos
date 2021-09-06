@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -58,6 +59,18 @@ class VideoServiceTest {
         Page<VideoDto> allVideos = videoService.getAll(pages);
 
         Assertions.assertEquals(allVideos.get().count(), videos.size());
+    }
+
+    @Test
+    public void aoEfetuarBuscaPorVideoComDeterminadoIdExistenteNoBancoOMesmoDeveSerRetornado(){
+        Optional<Video> videoOptional = Optional.ofNullable(video);
+        videoOptional.get().setId(1L);
+
+        when(videoRepository.findById(1L)).thenReturn(videoOptional);
+        VideoDto videoById = videoService.getById(1L);
+
+        Assertions.assertEquals(videoById.getId(), videoOptional.get().getId());
+        Assertions.assertEquals(videoById.getTitulo(), videoOptional.get().getTitulo());
     }
 
     @Test
