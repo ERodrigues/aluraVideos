@@ -2,15 +2,13 @@ package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
+import com.alura.videos.model.Categoria;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
@@ -19,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +79,54 @@ class VideoServiceTest {
     }
 
     @Test
+    public void aoEfetuarBuscaPorVideoPeloTituloExistenteEntaoRetornaraVideo(){
+        List<Video> videos = Arrays.asList(
+                new Video("A vida como ela e", "Drama", "", null)
+        );
+
+        Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
+        when(videoRepository.findByTituloContainingIgnoreCase("Vida", pages)).thenReturn(pageVideos);
+        Page<VideoDto> videoByTitulo = videoService.getVideoByTitulo("Vida", pages);
+
+        Assertions.assertEquals(1, videoByTitulo.get().count());
+    }
+
+    @Test
+    public void aoEfetuarBuscaPorVideoPeloTituloInexistenteDeveSerRetornadoUmaListaVazia(){
+        Page<Video> pageVideos = new PageImpl<>(new ArrayList<>(), pages, 0);
+        when(videoRepository.findByTituloContainingIgnoreCase("Vida", pages)).thenReturn(pageVideos);
+        Page<VideoDto> videoByTitulo = videoService.getVideoByTitulo("Vida", pages);
+
+        Assertions.assertEquals(videoByTitulo.get().count(), pageVideos.get().count());
+    }
+
+    @Test
+    public void aoEfetuarBuscaDeVideosPorUmaCategoriaExistenteRetornaQuantidadeDeVideosDestaCategoria(){
+        Categoria categoria = new Categoria("LIVRE", "PRETO");
+        categoria.setId(1L);
+
+        List<Video> videos = Arrays.asList(
+                new Video("A vida como ela e", "Drama", "", categoria),
+                new Video("Deby e Loyd", "Comedia", "", categoria)
+        );
+        Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
+        when(videoRepository.findByCategoriaId(1L, pages)).thenReturn(pageVideos);
+
+        Page<VideoDto> videoByCategoria = videoService.getVideoByCategoria(1L, pages);
+
+        Assertions.assertEquals(videoByCategoria.get().count(), pageVideos.get().count());
+    }
+
+    @Test
+    public void aoEfetuarBuscaDeVideosPorUmaCategoriaInexistenteRetornadoUmaListaVazia(){
+        Page<Video> pageVideos = new PageImpl<>(new ArrayList<>(), pages, 0);
+        when(videoRepository.findByCategoriaId(1L, pages)).thenReturn(pageVideos);
+        Page<VideoDto> videoByTitulo = videoService.getVideoByCategoria(1L, pages);
+
+        Assertions.assertEquals(videoByTitulo.get().count(), pageVideos.get().count());
+    }
+
+    @Test
     public void aoInserirUmVideoSemCategoriaACategoriaLivreDeveSerInformada(){
         VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", null);
 
@@ -103,5 +150,15 @@ class VideoServiceTest {
         Video captureVideo = videoArgumentCaptor.getValue();
         Assertions.assertEquals("ACAO", captureVideo.getCategoria().getTitulo());
         Assertions.assertEquals("VERMELHA", captureVideo.getCategoria().getCor());
+    }
+
+    @Test
+    public void excluiVideoAoInformarUmIdDeVideoValidoParaExclusao(){
+        Optional<Video> videoOptional = Optional.ofNullable(video);
+        videoOptional.get().setId(1L);
+        when(videoRepository.findById(1L)).thenReturn(videoOptional);
+
+        videoService.delete(1L);
+        verify(videoRepository).delete(video);
     }
 }
