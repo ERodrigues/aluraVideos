@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("hml")
-class VideoServiceTest {
+public class VideoServiceTest {
     @Mock
     private VideoRepository videoRepository;
     @Captor
@@ -41,15 +41,15 @@ class VideoServiceTest {
 
     @BeforeEach
     public void setUp(){
-        video = new Video("Novo Video", "Teste de video", "", null);
+        video = new Video(1L, "Novo Video", "Teste de video", "", null);
         pages = PageRequest.of(0, 5);
     }
 
     @Test
     public void aoBuscarPorTodosRegistrosRetornaQuantidadeDeRegistrosExistentesNoBanco(){
         List<Video> videos = Arrays.asList(
-            new Video("A vida como ela e", "Drama", "", null),
-            new Video("Deby e Loyd", "Comedia", "", null)
+            new Video(2L, "A vida como ela e", "Drama", "", null),
+            new Video(3L, "Deby e Loyd", "Comedia", "", null)
         );
 
         Page<Video> PageVideos = new PageImpl<>(videos, pages, videos.size());
@@ -63,7 +63,6 @@ class VideoServiceTest {
     @Test
     public void aoEfetuarBuscaPorVideoComDeterminadoIdExistenteNoBancoOMesmoDeveSerRetornado(){
         Optional<Video> videoOptional = Optional.ofNullable(video);
-        videoOptional.get().setId(1L);
 
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
         VideoDto videoById = videoService.getById(1L);
@@ -81,7 +80,7 @@ class VideoServiceTest {
     @Test
     public void aoEfetuarBuscaPorVideoPeloTituloExistenteEntaoRetornaraVideo(){
         List<Video> videos = Arrays.asList(
-                new Video("A vida como ela e", "Drama", "", null)
+                new Video(1L, "A vida como ela e", "Drama", "", null)
         );
 
         Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
@@ -102,12 +101,11 @@ class VideoServiceTest {
 
     @Test
     public void aoEfetuarBuscaDeVideosPorUmaCategoriaExistenteRetornaQuantidadeDeVideosDestaCategoria(){
-        Categoria categoria = new Categoria("LIVRE", "PRETO");
-        categoria.setId(1L);
+        Categoria categoria = new Categoria(1L, "LIVRE", "PRETO");
 
         List<Video> videos = Arrays.asList(
-                new Video("A vida como ela e", "Drama", "", categoria),
-                new Video("Deby e Loyd", "Comedia", "", categoria)
+                new Video(2L, "A vida como ela e", "Drama", "", categoria),
+                new Video(3L, "Deby e Loyd", "Comedia", "", categoria)
         );
         Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
         when(videoRepository.findByCategoriaId(1L, pages)).thenReturn(pageVideos);
@@ -155,7 +153,7 @@ class VideoServiceTest {
     @Test
     public void excluiVideoAoInformarUmIdDeVideoValidoParaExclusao(){
         Optional<Video> videoOptional = Optional.ofNullable(video);
-        videoOptional.get().setId(1L);
+
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
 
         videoService.delete(1L);
@@ -170,8 +168,6 @@ class VideoServiceTest {
     @Test
     public void dadosDoVideoEAtualizadoQuandoUmIdExistenteForInformado(){
         Optional<Video> videoOptional = Optional.ofNullable(video);
-        video.setId(1L);
-        videoOptional.get().setId(1L);
 
         VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
 
@@ -184,7 +180,6 @@ class VideoServiceTest {
     @Test
     public void dadosDoVideoNaoEAtualizadoQuandoUmIdInexistenteForInformado(){
         Optional<Video> videoOptional = Optional.empty();
-        video.setId(1L);
         VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
 
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
