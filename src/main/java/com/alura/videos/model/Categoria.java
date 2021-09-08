@@ -22,6 +22,12 @@ public class Categoria {
 
     }
 
+    public Categoria(Long id, String titulo, String cor) {
+        this.id = id;
+        this.titulo = titulo;
+        this.cor = cor;
+    }
+
     public Categoria(String titulo, String cor) {
         this.titulo = titulo;
         this.cor = cor;
