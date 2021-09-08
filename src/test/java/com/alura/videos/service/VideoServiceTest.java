@@ -161,4 +161,33 @@ class VideoServiceTest {
         videoService.delete(1L);
         verify(videoRepository).delete(video);
     }
+
+    @Test
+    public void videoNaoEExcluidoAoPassarUmIdDeVideoInexistente(){
+        Assertions.assertFalse(videoService.delete(1L));
+    }
+
+    @Test
+    public void dadosDoVideoEAtualizadoQuandoUmIdExistenteForInformado(){
+        Optional<Video> videoOptional = Optional.ofNullable(video);
+        video.setId(1L);
+        videoOptional.get().setId(1L);
+
+        VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
+
+        when(videoRepository.findById(1L)).thenReturn(videoOptional);
+        when(videoRepository.save(any(Video.class))).thenReturn(video);
+
+        Assertions.assertNotNull(videoService.update(1L, videoDto));
+    }
+
+    @Test
+    public void dadosDoVideoNaoEAtualizadoQuandoUmIdInexistenteForInformado(){
+        Optional<Video> videoOptional = Optional.empty();
+        video.setId(1L);
+        VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
+
+        when(videoRepository.findById(1L)).thenReturn(videoOptional);
+        Assertions.assertNull(videoService.update(1L, videoDto));
+    }
 }
