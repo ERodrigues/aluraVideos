@@ -29,9 +29,8 @@ public class VideoService {
     }
 
     public VideoDto salvar(VideoDto videoDto) {
-        if (videoDto.getCategoria() == null){
-            videoDto.setCategoria(new CategoriaDto(1, "LIVRE", "Branco"));
-        }
+        videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
+
         Video video = videoRepository.save(Video.convert(videoDto));
         return VideoDto.converter(video);
     }
@@ -39,6 +38,8 @@ public class VideoService {
     public VideoDto atualizar(Long idVideo, VideoDto videoDto){
         if (retornaPorId(idVideo) != null) {
             videoDto.setId(idVideo);
+            videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
+
             Video video = videoRepository.save(Video.convert(videoDto));
             return VideoDto.converter(video);
         }
@@ -61,5 +62,12 @@ public class VideoService {
         Page<Video> videos = videoRepository.findByCategoriaId(idCategoria, paginas);
         return videos
                 .map(VideoDto::converter);
+    }
+
+    private CategoriaDto retornaCategoriaValida(CategoriaDto categoriaDto){
+        if (categoriaDto == null){
+            return new CategoriaDto(1, "LIVRE", "Branco");
+        }
+        return categoriaDto;
     }
 }
