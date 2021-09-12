@@ -1,6 +1,7 @@
 package com.alura.videos.controller;
 
 import com.alura.videos.dto.VideoDto;
+import com.alura.videos.exception.CategoriaInexistenteException;
 import com.alura.videos.service.VideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,13 +39,21 @@ public class VideoController {
     @ApiOperation(value="Cadastra um novo vídeo na base de dados")
     @PostMapping
     public ResponseEntity<VideoDto> salvarVideo(@RequestBody @Valid VideoDto videoDto){
-        return new ResponseEntity<>(videoService.salvar(videoDto), HttpStatus.OK);
+        try{
+            return new ResponseEntity<>(videoService.salvar(videoDto), HttpStatus.OK);
+        } catch (CategoriaInexistenteException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
     @PutMapping("/{id}")
     public ResponseEntity<VideoDto> atualizarVideo(@PathVariable Long id, @RequestBody @Valid VideoDto videoDto){
-        return new ResponseEntity<>(videoService.atualizar(id, videoDto), HttpStatus.OK);
+        try{
+            return new ResponseEntity<>(videoService.atualizar(id, videoDto), HttpStatus.OK);
+        } catch (CategoriaInexistenteException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
