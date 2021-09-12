@@ -8,7 +8,10 @@ import com.alura.videos.repository.VideoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
@@ -31,10 +34,15 @@ import static org.mockito.Mockito.*;
 public class VideoServiceTest {
     @Mock
     private VideoRepository videoRepository;
+    @Mock
+    private CategoriaService categoriaService;
+
     @Captor
     private ArgumentCaptor<Video> videoArgumentCaptor;
+
     @InjectMocks
     private VideoService videoService;
+
 
     private Pageable pages;
     private Video video;
@@ -128,8 +136,11 @@ public class VideoServiceTest {
     @Test
     public void aoInserirRegistroSemCategoriaACategoriaLivreDeveSerInformada(){
         VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", null);
+        CategoriaDto categoria = new CategoriaDto(1L, "LIVRE", "teste");
 
+        when(categoriaService.retornaPorId(1L)).thenReturn(categoria);
         when(videoRepository.save(any(Video.class))).thenReturn(video);
+
         videoService.salvar(videoDto);
 
         verify(videoRepository).save(videoArgumentCaptor.capture());
@@ -140,8 +151,10 @@ public class VideoServiceTest {
 
     @Test
     public void aoInserirUmRegistroComCategoriaValidaACategoriaInformadaDeveSerPersistida(){
-        VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", new CategoriaDto(1,"ACAO", "VERMELHA"));
+        CategoriaDto categoria = new CategoriaDto(1L, "ACAO", "VERMELHA");
+        VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", categoria);
 
+        when(categoriaService.retornaPorId(1L)).thenReturn(categoria);
         when(videoRepository.save(any(Video.class))).thenReturn(video);
         videoService.salvar(videoDto);
 
@@ -168,10 +181,12 @@ public class VideoServiceTest {
 
     @Test
     public void dadosDoVideoEAtualizadoQuandoUmIdExistenteForInformado(){
+        CategoriaDto categoria = new CategoriaDto(1L, "ACAO", "VERMELHA");
         Optional<Video> videoOptional = Optional.ofNullable(video);
 
-        VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
+        VideoDto videoDto = new VideoDto("Alteracao de video", "", "", categoria);
 
+        when(categoriaService.retornaPorId(1L)).thenReturn(categoria);
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
         when(videoRepository.save(any(Video.class))).thenReturn(video);
 
