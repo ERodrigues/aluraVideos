@@ -46,7 +46,7 @@ public class VideoServiceTest {
     }
 
     @Test
-    public void aoBuscarPorTodosRegistrosRetornaQuantidadeDeRegistrosExistentesNoBanco(){
+    public void dadoDoisRegistrosInseridosAoListaTodosOsRegistrosAMesmaQuantidadeDeveSerRetornada(){
         List<Video> videos = Arrays.asList(
             new Video(2L, "A vida como ela e", "Drama", "", null),
             new Video(3L, "Deby e Loyd", "Comedia", "", null)
@@ -55,52 +55,53 @@ public class VideoServiceTest {
         Page<Video> PageVideos = new PageImpl<>(videos, pages, videos.size());
 
         when(videoRepository.findAll(pages)).thenReturn(PageVideos);
-        Page<VideoDto> allVideos = videoService.getAll(pages);
+        Page<VideoDto> allVideos = videoService.listaTodos(pages);
 
         Assertions.assertEquals(allVideos.get().count(), videos.size());
     }
 
     @Test
-    public void aoEfetuarBuscaPorVideoComDeterminadoIdExistenteNoBancoOMesmoDeveSerRetornado(){
+    public void aoBuscarPorUmIdExistenteOServicoDeveRetornarVideoComMesmoIdTitulo(){
         Optional<Video> videoOptional = Optional.ofNullable(video);
 
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
-        VideoDto videoById = videoService.getById(1L);
+        VideoDto videoById = videoService.retornaPorId(1L);
 
         Assertions.assertEquals(videoById.getId(), videoOptional.get().getId());
         Assertions.assertEquals(videoById.getTitulo(), videoOptional.get().getTitulo());
     }
 
     @Test
-    public void aoEfetuarBuscaPorVideoComDeterminadoIdInexistenteNoBancoOMesmoDeveRetornarNulo(){
-        VideoDto videoById = videoService.getById(1L);
+    public void aoBuscaPorUmIdInexistenteOServicoDeveRetornarNulo(){
+        VideoDto videoById = videoService.retornaPorId(1L);
         Assertions.assertNull(videoById);
     }
 
     @Test
-    public void aoEfetuarBuscaPorVideoPeloTituloExistenteEntaoRetornaraVideo(){
+    public void aoBuscarPorUmConjuntoDeCaracteresDoTituloExistenteOServicoDeveRetornarOVideoQueContanhaOsMesmosCaracteresNoTitulo(){
         List<Video> videos = Arrays.asList(
                 new Video(1L, "A vida como ela e", "Drama", "", null)
         );
 
         Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
         when(videoRepository.findByTituloContainingIgnoreCase("Vida", pages)).thenReturn(pageVideos);
-        Page<VideoDto> videoByTitulo = videoService.getVideoByTitulo("Vida", pages);
+        Page<VideoDto> videoByTitulo = videoService.retornaListaPorTitulo("Vida", pages);
 
         Assertions.assertEquals(1, videoByTitulo.get().count());
     }
 
+    // ao buscar um video por um id existente entao o servico deve retornar a entidade de video com mesmo Id e Titulo
     @Test
-    public void aoEfetuarBuscaPorVideoPeloTituloInexistenteDeveSerRetornadoUmaListaVazia(){
+    public void aoBuscarPorUmConjuntoDeCaracteresDoTituloInexistenteOServicoDeveRetornarUmaListaVazia(){
         Page<Video> pageVideos = new PageImpl<>(new ArrayList<>(), pages, 0);
         when(videoRepository.findByTituloContainingIgnoreCase("Vida", pages)).thenReturn(pageVideos);
-        Page<VideoDto> videoByTitulo = videoService.getVideoByTitulo("Vida", pages);
+        Page<VideoDto> videoByTitulo = videoService.retornaListaPorTitulo("Vida", pages);
 
         Assertions.assertEquals(videoByTitulo.get().count(), pageVideos.get().count());
     }
 
     @Test
-    public void aoEfetuarBuscaDeVideosPorUmaCategoriaExistenteRetornaQuantidadeDeVideosDestaCategoria(){
+    public void aoBuscarPorUmaCategoriaExistenteRetornaQuantidadeDeVideosDestaCategoria(){
         Categoria categoria = new Categoria(1L, "LIVRE", "PRETO");
 
         List<Video> videos = Arrays.asList(
@@ -110,26 +111,26 @@ public class VideoServiceTest {
         Page<Video> pageVideos = new PageImpl<>(videos, pages, videos.size());
         when(videoRepository.findByCategoriaId(1L, pages)).thenReturn(pageVideos);
 
-        Page<VideoDto> videoByCategoria = videoService.getVideoByCategoria(1L, pages);
+        Page<VideoDto> videoByCategoria = videoService.retornaListaPorCategoria(1L, pages);
 
         Assertions.assertEquals(videoByCategoria.get().count(), pageVideos.get().count());
     }
 
     @Test
-    public void aoEfetuarBuscaDeVideosPorUmaCategoriaInexistenteRetornadoUmaListaVazia(){
+    public void aoBuscarPorUmaCategoriaInexistenteRetornadoUmaListaVazia(){
         Page<Video> pageVideos = new PageImpl<>(new ArrayList<>(), pages, 0);
         when(videoRepository.findByCategoriaId(1L, pages)).thenReturn(pageVideos);
-        Page<VideoDto> videoByTitulo = videoService.getVideoByCategoria(1L, pages);
+        Page<VideoDto> videoByTitulo = videoService.retornaListaPorCategoria(1L, pages);
 
         Assertions.assertEquals(videoByTitulo.get().count(), pageVideos.get().count());
     }
 
     @Test
-    public void aoInserirUmVideoSemCategoriaACategoriaLivreDeveSerInformada(){
+    public void aoInserirRegistroSemCategoriaACategoriaLivreDeveSerInformada(){
         VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", null);
 
         when(videoRepository.save(any(Video.class))).thenReturn(video);
-        videoService.save(videoDto);
+        videoService.salvar(videoDto);
 
         verify(videoRepository).save(videoArgumentCaptor.capture());
 
@@ -138,11 +139,11 @@ public class VideoServiceTest {
     }
 
     @Test
-    public void aoInserirUmVideoComCategoriaValidaACategoriaInformadaDeveSerPersistida(){
+    public void aoInserirUmRegistroComCategoriaValidaACategoriaInformadaDeveSerPersistida(){
         VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", new CategoriaDto(1,"ACAO", "VERMELHA"));
 
         when(videoRepository.save(any(Video.class))).thenReturn(video);
-        videoService.save(videoDto);
+        videoService.salvar(videoDto);
 
         verify(videoRepository).save(videoArgumentCaptor.capture());
         Video captureVideo = videoArgumentCaptor.getValue();
@@ -151,18 +152,18 @@ public class VideoServiceTest {
     }
 
     @Test
-    public void excluiVideoAoInformarUmIdDeVideoValidoParaExclusao(){
+    public void aoPassarUmIdValidoParaExclusaoRegistroEExcluido(){
         Optional<Video> videoOptional = Optional.ofNullable(video);
 
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
 
-        videoService.delete(1L);
+        videoService.excluir(1L);
         verify(videoRepository).delete(video);
     }
 
     @Test
     public void videoNaoEExcluidoAoPassarUmIdDeVideoInexistente(){
-        Assertions.assertFalse(videoService.delete(1L));
+        Assertions.assertFalse(videoService.excluir(1L));
     }
 
     @Test
@@ -174,7 +175,7 @@ public class VideoServiceTest {
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
         when(videoRepository.save(any(Video.class))).thenReturn(video);
 
-        Assertions.assertNotNull(videoService.update(1L, videoDto));
+        Assertions.assertNotNull(videoService.atualizar(1L, videoDto));
     }
 
     @Test
@@ -183,6 +184,6 @@ public class VideoServiceTest {
         VideoDto videoDto = new VideoDto("Alteracao de video", "", "", null);
 
         when(videoRepository.findById(1L)).thenReturn(videoOptional);
-        Assertions.assertNull(videoService.update(1L, videoDto));
+        Assertions.assertNull(videoService.atualizar(1L, videoDto));
     }
 }

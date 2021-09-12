@@ -12,33 +12,32 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 public class AutenticaViaTokenFilter extends OncePerRequestFilter {
 
     private TokenApiService tokenService;
-    private UsuarioRepository userRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public AutenticaViaTokenFilter(TokenApiService tokenService, UsuarioRepository userRepository) {
+    public AutenticaViaTokenFilter(TokenApiService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService; 
-        this.userRepository = userRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoverToken(request);
 
-        if (tokenService.isValid(token)){
+        if (tokenService.eValido(token)){
             authenticateUser(token);
         }
         filterChain.doFilter(request, response);
     }
 
     private void authenticateUser(String token) {
-        Long idUser = tokenService.getIdUser(token);
-        Usuario user = userRepository.findById(idUser).get();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        Long idUsuario = tokenService.getIdUser(token);
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        UsernamePasswordAuthenticationToken autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(autenticacao);
     }
 
     private String recoverToken(HttpServletRequest request) {

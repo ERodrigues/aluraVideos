@@ -23,9 +23,9 @@ import javax.validation.Valid;
 public class AutenticacaoController {
 
     @Autowired
-    private AuthenticationManager authManager;
+    private AuthenticationManager gerenciadorDeAutenticacao;
     @Autowired
-    private TokenApiService tokenService;
+    private TokenApiService servicoToken;
 
 
     @PostMapping
@@ -33,8 +33,8 @@ public class AutenticacaoController {
         UsernamePasswordAuthenticationToken login = loginDto.convert();
 
         try{
-            Authentication authenticate = authManager.authenticate(login);
-            String token = tokenService.generateToken(authenticate);
+            Authentication autenticacao = gerenciadorDeAutenticacao.authenticate(login);
+            String token = servicoToken.gerarToken(autenticacao);
             return ResponseEntity.ok(new TokenDto(token,"Bearer"));
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();

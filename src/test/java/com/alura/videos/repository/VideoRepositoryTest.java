@@ -34,7 +34,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    public void deveRetornarUmaListaDeVideosDeAcordoComACategoria(){
+    public void RetornaUmaListaDeVideosDeAcordoComACategoria(){
         Categoria categoria = testEntityManager.persist(new Categoria("Novo", "teste"));
         Video video = testEntityManager.persist(new Video("teste", "teste", "teste", categoria));
 
@@ -43,7 +43,7 @@ public class VideoRepositoryTest {
     }
 
     @Test
-    public void naoDeveRetornarNenhumVideoSeACategoriaNaoForInformada() {
+    public void naoRetornaNenhumVideoSeACategoriaNaoForInformada() {
         Page<Video> videosByCategory = videoRepository.findByCategoriaId(null, pages);
         assertEquals(0L, videosByCategory.getTotalElements());
     }

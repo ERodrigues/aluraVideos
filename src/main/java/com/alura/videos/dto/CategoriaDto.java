@@ -43,7 +43,7 @@ public class CategoriaDto {
         this.cor = cor;
     }
 
-    public static CategoriaDto convert(Categoria categoria){
+    public static CategoriaDto converter(Categoria categoria){
         CategoriaDto categoriaDto = new CategoriaDto();
         categoriaDto.setId(categoria.getId());
         categoriaDto.setTitulo(categoria.getTitulo());

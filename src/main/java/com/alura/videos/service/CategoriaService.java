@@ -15,32 +15,32 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Page<CategoriaDto> getAll(Pageable pages) {
-        return categoriaRepository.findAll(pages)
-                .map(CategoriaDto::convert);
+    public Page<CategoriaDto> listarTodos(Pageable paginas) {
+        return categoriaRepository.findAll(paginas)
+                .map(CategoriaDto::converter);
     }
 
-    public CategoriaDto getById(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.map(CategoriaDto::convert).orElse(null);
+    public CategoriaDto retornaPorId(Long idCategoria) {
+        Optional<Categoria> categoria = categoriaRepository.findById(idCategoria);
+        return categoria.map(CategoriaDto::converter).orElse(null);
     }
 
-    public CategoriaDto save(CategoriaDto categoriaDto) {
+    public CategoriaDto salvar(CategoriaDto categoriaDto) {
         Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
-        return CategoriaDto.convert(categoria);
+        return CategoriaDto.converter(categoria);
     }
 
-    public CategoriaDto update(CategoriaDto categoriaDto, Long id) {
-        if (getById(id) != null) {
-            categoriaDto.setId(id);
+    public CategoriaDto atualizar(CategoriaDto categoriaDto, Long idCategoria) {
+        if (retornaPorId(idCategoria) != null) {
+            categoriaDto.setId(idCategoria);
             Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
-            return CategoriaDto.convert(categoria);
+            return CategoriaDto.converter(categoria);
         }
         return null;
     }
 
-    public boolean delete(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
+    public boolean excluir(Long idCategoria) {
+        Optional<Categoria> categoria = categoriaRepository.findById(idCategoria);
         categoria.ifPresent(value -> categoriaRepository.delete(value));
         return categoria.isPresent();
     }

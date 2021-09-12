@@ -23,34 +23,34 @@ public class VideoController {
 
     @ApiOperation(value="Retorna todos os videos cadastrados")
     @GetMapping
-    public ResponseEntity<Page<VideoDto>> getAll(@RequestParam int page, @RequestParam int size){
-        Pageable pages = PageRequest.of(page, size);
-        return new ResponseEntity<>(videoService.getAll(pages), HttpStatus.OK);
+    public ResponseEntity<Page<VideoDto>> listarTodos(@RequestParam int pagina, @RequestParam int itensPorPagina){
+        Pageable paginas = PageRequest.of(pagina, itensPorPagina);
+        return new ResponseEntity<>(videoService.listaTodos(paginas), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna o vídeo de acordo com o seu ID")
     @GetMapping("/{id}")
-    public ResponseEntity<VideoDto> getVideoById(@PathVariable Long id){
-        return new ResponseEntity<>(videoService.getById(id), HttpStatus.OK);
+    public ResponseEntity<VideoDto> retornaVideoPorId(@PathVariable Long id){
+        return new ResponseEntity<>(videoService.retornaPorId(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra um novo vídeo na base de dados")
     @PostMapping
-    public ResponseEntity<VideoDto> saveVideo(@RequestBody @Valid VideoDto videoDto){
-        return new ResponseEntity<>(videoService.save(videoDto), HttpStatus.OK);
+    public ResponseEntity<VideoDto> salvarVideo(@RequestBody @Valid VideoDto videoDto){
+        return new ResponseEntity<>(videoService.salvar(videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera um video de acordo com o ID informado")
     @PutMapping("/{id}")
-    public ResponseEntity<VideoDto> updateVideo(@PathVariable long id, @RequestBody @Valid VideoDto videoDto){
-        return new ResponseEntity<>(videoService.update(id, videoDto), HttpStatus.OK);
+    public ResponseEntity<VideoDto> atualizarVideo(@PathVariable Long id, @RequestBody @Valid VideoDto videoDto){
+        return new ResponseEntity<>(videoService.atualizar(id, videoDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Deleta um video de acordo com o seu ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteVideo(@PathVariable Long id){
-        var isRemoved = videoService.delete(id);
-        if (!isRemoved){
+    public ResponseEntity<String> excluirVideo(@PathVariable Long id){
+        var foiRemovido = videoService.excluir(id);
+        if (!foiRemovido){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -59,15 +59,15 @@ public class VideoController {
 
     @ApiOperation(value = "Busca videos de acordo com o seu titulo")
     @GetMapping("/")
-    public ResponseEntity<Page<VideoDto>> getVideosByTitulo(@RequestParam String search, @RequestParam int page, @RequestParam int size){
-        Pageable pages = PageRequest.of(page, size);
-        return new ResponseEntity<>(videoService.getVideoByTitulo(search, pages), HttpStatus.OK);
+    public ResponseEntity<Page<VideoDto>> retornaVideosPorTitulo(@RequestParam String titulo, @RequestParam int pagina, @RequestParam int itensPorPagina){
+        Pageable paginas = PageRequest.of(pagina, itensPorPagina);
+        return new ResponseEntity<>(videoService.retornaListaPorTitulo(titulo, paginas), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Retorna uma lista de videos de acordo com a categoria")
-    @GetMapping("/categorias/{id}/videos")
-    public ResponseEntity<Page<VideoDto>> getVideoByCategoria(@PathVariable Long id, @RequestParam int page, @RequestParam int size){
-        Pageable pages = PageRequest.of(page, size);
-        return new ResponseEntity<>(videoService.getVideoByCategoria(id, pages), HttpStatus.OK);
+    @GetMapping("/categorias/{idCategoria}/videos")
+    public ResponseEntity<Page<VideoDto>> retornaVideosPorCategoria(@PathVariable Long idCategoria, @RequestParam int pagina, @RequestParam int itensPorPagina){
+        Pageable paginas = PageRequest.of(pagina, itensPorPagina);
+        return new ResponseEntity<>(videoService.retornaListaPorCategoria(idCategoria, paginas), HttpStatus.OK);
     }
 }

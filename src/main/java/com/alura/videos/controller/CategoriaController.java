@@ -26,36 +26,36 @@ public class CategoriaController {
     @GetMapping
     @ApiOperation(value="Retorna todas categorias cadastradas")
     @Cacheable("listCategory")
-    public ResponseEntity<Page<CategoriaDto>> getAll(@RequestParam int page, @RequestParam int size){
-        Pageable pages = PageRequest.of(page, size);
-        return new ResponseEntity<>(categoriaService.getAll(pages), HttpStatus.OK);
+    public ResponseEntity<Page<CategoriaDto>> listarTodos(@RequestParam int pagina, @RequestParam int itensPorPagina){
+        Pageable paginas = PageRequest.of(pagina, itensPorPagina);
+        return new ResponseEntity<>(categoriaService.listarTodos(paginas), HttpStatus.OK);
     }
 
     @ApiOperation(value="Retorna a categoria de acordo com o seu ID")
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDto> getCategoryById(@PathVariable Long id){
-        return new ResponseEntity<>(categoriaService.getById(id), HttpStatus.OK);
+    public ResponseEntity<CategoriaDto> retornaCategoriaPorId(@PathVariable Long id){
+        return new ResponseEntity<>(categoriaService.retornaPorId(id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Cadastra uma categoria na base")
     @PostMapping
     @CacheEvict("listCategory")
-    public ResponseEntity<CategoriaDto> saveCategory(@RequestBody @Valid CategoriaDto categoriaDto){
-        return new ResponseEntity<>(categoriaService.save(categoriaDto), HttpStatus.OK);
+    public ResponseEntity<CategoriaDto> salvarCategoria(@RequestBody @Valid CategoriaDto categoriaDto){
+        return new ResponseEntity<>(categoriaService.salvar(categoriaDto), HttpStatus.OK);
     }
 
     @ApiOperation(value="Altera o registro de uma categoria de acordo com o seu ID")
     @PutMapping("/{id}")
     @CacheEvict("listCategory")
-    public ResponseEntity<CategoriaDto> updateCategory(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable Long id){
-        return new ResponseEntity<>(categoriaService.update(categoriaDto, id), HttpStatus.OK);
+    public ResponseEntity<CategoriaDto> atualizarCategoria(@RequestBody @Valid CategoriaDto categoriaDto, @PathVariable Long id){
+        return new ResponseEntity<>(categoriaService.atualizar(categoriaDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value="Exclui o registro de uma categoria de acordo com o seu ID")
     @DeleteMapping("/{id}")
     @CacheEvict("listCategory")
-    public ResponseEntity<String> deleteCategoria(@PathVariable Long id){
-        var isRemoved = categoriaService.delete(id);
+    public ResponseEntity<String> excluirCategoria(@PathVariable Long id){
+        var isRemoved = categoriaService.excluir(id);
 
         if (!isRemoved){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

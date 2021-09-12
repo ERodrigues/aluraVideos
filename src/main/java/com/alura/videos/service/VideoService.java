@@ -17,49 +17,49 @@ public class VideoService {
     @Autowired
     private VideoRepository videoRepository;
 
-    public Page<VideoDto> getAll(Pageable pages) {
-        Page<Video> videos = videoRepository.findAll(pages);
+    public Page<VideoDto> listaTodos(Pageable paginas) {
+        Page<Video> videos = videoRepository.findAll(paginas);
         return videos
-                .map(VideoDto::convert);
+                .map(VideoDto::converter);
     }
 
-    public VideoDto getById(Long id) {
-        Optional<Video> video = videoRepository.findById(id);
-        return video.map(VideoDto::convert).orElse(null);
+    public VideoDto retornaPorId(Long idVideo) {
+        Optional<Video> video = videoRepository.findById(idVideo);
+        return video.map(VideoDto::converter).orElse(null);
     }
 
-    public VideoDto save(VideoDto videoDto) {
+    public VideoDto salvar(VideoDto videoDto) {
         if (videoDto.getCategoria() == null){
             videoDto.setCategoria(new CategoriaDto(1, "LIVRE", "Branco"));
         }
         Video video = videoRepository.save(Video.convert(videoDto));
-        return VideoDto.convert(video);
+        return VideoDto.converter(video);
     }
 
-    public VideoDto update(Long id, VideoDto videoDto){
-        if (getById(id) != null) {
-            videoDto.setId(id);
+    public VideoDto atualizar(Long idVideo, VideoDto videoDto){
+        if (retornaPorId(idVideo) != null) {
+            videoDto.setId(idVideo);
             Video video = videoRepository.save(Video.convert(videoDto));
-            return VideoDto.convert(video);
+            return VideoDto.converter(video);
         }
         return null;
     }
 
-    public Boolean delete(Long id){
-        Optional<Video> video = videoRepository.findById(id);
+    public Boolean excluir(Long idVideo){
+        Optional<Video> video = videoRepository.findById(idVideo);
         video.ifPresent(value -> videoRepository.delete(value));
         return video.isPresent();
     }
 
-    public Page<VideoDto> getVideoByTitulo(String search, Pageable pages) {
-        Page<Video> videos = videoRepository.findByTituloContainingIgnoreCase(search, pages);
+    public Page<VideoDto> retornaListaPorTitulo(String tituloPesquisado, Pageable paginas) {
+        Page<Video> videos = videoRepository.findByTituloContainingIgnoreCase(tituloPesquisado, paginas);
         return videos
-                .map(VideoDto::convert);
+                .map(VideoDto::converter);
     }
 
-    public Page<VideoDto> getVideoByCategoria(Long id, Pageable pages){
-        Page<Video> videos = videoRepository.findByCategoriaId(id, pages);
+    public Page<VideoDto> retornaListaPorCategoria(Long idCategoria, Pageable paginas){
+        Page<Video> videos = videoRepository.findByCategoriaId(idCategoria, paginas);
         return videos
-                .map(VideoDto::convert);
+                .map(VideoDto::converter);
     }
 }

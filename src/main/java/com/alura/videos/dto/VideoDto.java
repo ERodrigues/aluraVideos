@@ -63,7 +63,7 @@ public class VideoDto {
         this.categoria = categoriaDto;
     }
 
-    public static VideoDto convert(Video video) {
+    public static VideoDto converter(Video video) {
         VideoDto videoDto = new VideoDto();
         videoDto.setId(video.getId());
         videoDto.setDescricao(video.getDescricao());
@@ -71,7 +71,7 @@ public class VideoDto {
         videoDto.setUrl(video.getUrl());
 
         if (video.getCategoria() != null){
-            videoDto.setCategoria(CategoriaDto.convert((video.getCategoria())));
+            videoDto.setCategoria(CategoriaDto.converter((video.getCategoria())));
         }
         return videoDto;
     }

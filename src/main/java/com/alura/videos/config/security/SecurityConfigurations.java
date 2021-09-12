@@ -29,7 +29,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     private TokenApiService tokenService;
 
     @Autowired
-    private UsuarioRepository userRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Override
     @Bean
@@ -51,7 +51,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new AutenticaViaTokenFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AutenticaViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
