@@ -2,7 +2,7 @@ package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
-import com.alura.videos.model.Categoria;
+import com.alura.videos.exception.CategoriaInexistenteException;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class VideoService {
             Video video = videoRepository.save(Video.convert(videoDto));
             return VideoDto.converter(video);
         }
-        return null;
+        throw new CategoriaInexistenteException("Categoria informada no registro não esta cadastrada!");
     }
 
     public VideoDto atualizar(Long idVideo, VideoDto videoDto){
@@ -51,7 +51,7 @@ public class VideoService {
                 return VideoDto.converter(video);
             }
         }
-        return null;
+        throw new CategoriaInexistenteException("Categoria informada no registro não esta cadastrada!");
     }
 
     public Boolean excluir(Long idVideo){
