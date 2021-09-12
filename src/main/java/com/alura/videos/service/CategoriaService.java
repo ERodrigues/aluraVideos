@@ -33,8 +33,7 @@ public class CategoriaService {
     public CategoriaDto atualizar(CategoriaDto categoriaDto, Long idCategoria) {
         if (retornaPorId(idCategoria) != null) {
             categoriaDto.setId(idCategoria);
-            Categoria categoria = categoriaRepository.save(Categoria.convert(categoriaDto));
-            return CategoriaDto.converter(categoria);
+            return salvar(categoriaDto);
         }
         return null;
     }
