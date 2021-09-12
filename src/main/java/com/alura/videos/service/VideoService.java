@@ -34,7 +34,7 @@ public class VideoService {
 
     public VideoDto salvar(VideoDto videoDto) {
         videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
-        if (categoriaValida(videoDto.getCategoria())){
+        if (categoriaExiste(videoDto.getCategoria())){
             Video video = videoRepository.save(Video.convert(videoDto));
             return VideoDto.converter(video);
         }
@@ -74,7 +74,7 @@ public class VideoService {
         return categoriaDto;
     }
 
-    private Boolean categoriaValida(CategoriaDto categoriaDto){
+    private Boolean categoriaExiste(CategoriaDto categoriaDto){
         return (categoriaService.retornaPorId(categoriaDto.getId()) != null);
     }
 }
