@@ -44,14 +44,9 @@ public class VideoService {
     public VideoDto atualizar(Long idVideo, VideoDto videoDto){
         if (retornaPorId(idVideo) != null) {
             videoDto.setId(idVideo);
-            videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
-
-            if (categoriaValida(videoDto.getCategoria())){
-                Video video = videoRepository.save(Video.convert(videoDto));
-                return VideoDto.converter(video);
-            }
+            return salvar(videoDto);
         }
-        throw new CategoriaInexistenteException("Categoria informada no registro não esta cadastrada!");
+        return null;
     }
 
     public Boolean excluir(Long idVideo){
@@ -79,7 +74,7 @@ public class VideoService {
         return categoriaDto;
     }
 
-    private boolean categoriaValida(CategoriaDto categoriaDto){
+    private Boolean categoriaValida(CategoriaDto categoriaDto){
         return (categoriaService.retornaPorId(categoriaDto.getId()) != null);
     }
 }
