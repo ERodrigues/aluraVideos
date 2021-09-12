@@ -2,6 +2,7 @@ package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
+import com.alura.videos.model.Categoria;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class VideoService {
     @Autowired
     private VideoRepository videoRepository;
 
+    @Autowired
+    private CategoriaService categoriaService;
+
     public Page<VideoDto> listaTodos(Pageable paginas) {
         Page<Video> videos = videoRepository.findAll(paginas);
         return videos
@@ -30,9 +34,11 @@ public class VideoService {
 
     public VideoDto salvar(VideoDto videoDto) {
         videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
-
-        Video video = videoRepository.save(Video.convert(videoDto));
-        return VideoDto.converter(video);
+        if (categoriaValida(videoDto.getCategoria())){
+            Video video = videoRepository.save(Video.convert(videoDto));
+            return VideoDto.converter(video);
+        }
+        return null;
     }
 
     public VideoDto atualizar(Long idVideo, VideoDto videoDto){
@@ -40,8 +46,10 @@ public class VideoService {
             videoDto.setId(idVideo);
             videoDto.setCategoria(retornaCategoriaValida(videoDto.getCategoria()));
 
-            Video video = videoRepository.save(Video.convert(videoDto));
-            return VideoDto.converter(video);
+            if (categoriaValida(videoDto.getCategoria())){
+                Video video = videoRepository.save(Video.convert(videoDto));
+                return VideoDto.converter(video);
+            }
         }
         return null;
     }
@@ -69,5 +77,9 @@ public class VideoService {
             return new CategoriaDto(1, "LIVRE", "Branco");
         }
         return categoriaDto;
+    }
+
+    private boolean categoriaValida(CategoriaDto categoriaDto){
+        return (categoriaService.retornaPorId(categoriaDto.getId()) != null);
     }
 }
