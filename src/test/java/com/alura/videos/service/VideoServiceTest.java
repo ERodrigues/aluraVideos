@@ -2,16 +2,15 @@ package com.alura.videos.service;
 
 import com.alura.videos.dto.CategoriaDto;
 import com.alura.videos.dto.VideoDto;
+import com.alura.videos.exception.CategoriaInexistenteException;
 import com.alura.videos.model.Categoria;
 import com.alura.videos.model.Video;
 import com.alura.videos.repository.VideoRepository;
+import io.jsonwebtoken.lang.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 
 @DataJpaTest
@@ -162,6 +162,31 @@ public class VideoServiceTest {
         Video captureVideo = videoArgumentCaptor.getValue();
         Assertions.assertEquals("ACAO", captureVideo.getCategoria().getTitulo());
         Assertions.assertEquals("VERMELHA", captureVideo.getCategoria().getCor());
+    }
+
+    @Test
+    public void aoInserirUmRegistroComCategoriaInvalidaAExecacaoDeCategoriaInvalidaDeveSerAcionada(){
+        CategoriaDto categoria = new CategoriaDto(2L, "ACAO", "VERMELHA");
+        VideoDto videoDto = new VideoDto("Teste", "Teste", "teste", categoria);
+
+        when(categoriaService.retornaPorId(2L)).thenReturn(null);
+        when(videoRepository.save(any(Video.class))).thenReturn(video);
+
+        Assertions.assertThrows(CategoriaInexistenteException.class, ()-> videoService.salvar(videoDto));
+    }
+
+    @Test
+    public void aoAtualizarUmRegistroComCategoriaInvalidaAExecacaoDeCategoriaInvalidaDeveSerAcionada(){
+        CategoriaDto categoria = new CategoriaDto(2L, "ACAO", "VERMELHA");
+        Optional<Video> videoOptional = Optional.ofNullable(video);
+
+        VideoDto videoDto = new VideoDto("Alteracao de video", "", "", categoria);
+
+        when(categoriaService.retornaPorId(2L)).thenReturn(null);
+        when(videoRepository.findById(1L)).thenReturn(videoOptional);
+        when(videoRepository.save(any(Video.class))).thenReturn(video);
+
+        Assertions.assertThrows(CategoriaInexistenteException.class, ()-> videoService.salvar(videoDto));
     }
 
     @Test
