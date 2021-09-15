@@ -42,7 +42,7 @@ public class VideoController {
         try{
             return new ResponseEntity<>(videoService.salvar(videoDto), HttpStatus.OK);
         } catch (CategoriaInexistenteException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -52,7 +52,7 @@ public class VideoController {
         try{
             return new ResponseEntity<>(videoService.atualizar(id, videoDto), HttpStatus.OK);
         } catch (CategoriaInexistenteException ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
 
