@@ -1,5 +1,5 @@
 FROM openjdk:11
-RUN addgroup -S spring && adduser -S spring -G spring
+RUN adduser --system --group spring
 USER spring:spring
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} appAlura.jar
